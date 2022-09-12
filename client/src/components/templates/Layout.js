@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "../../assets/styles/styleReset.css";
-import { ThemeProvider } from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import { GlobalStyle } from "../../assets/styles/GlobalStyle";
 import { Theme } from "../../assets/styles/theme";
 import Navigation from "../organisms/Navigation/Navigation";
@@ -14,6 +14,10 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+const Wrapper = styled.main`
+padding: 50px;
+`;
+
 class Layout extends Component {
   render() {
     return (
@@ -23,7 +27,9 @@ class Layout extends Component {
             <ThemeProvider theme={Theme}>
               <GlobalStyle />
               <Navigation />
-              <main>{this.props.children}</main>
+              <Wrapper>
+              {this.props.children}
+              </Wrapper>
             </ThemeProvider>
           </BrowserRouter>
         </ApolloProvider>

@@ -1,17 +1,13 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import ProductDetail from "./components/templates/ProductDetail";
-import All from "./pages/All";
-import Clothes from "./pages/Clothes";
-import Tech from "./pages/Tech";
+import ProductList from "./components/templates/ProductList";
 
 function App() {
   return (
     <Routes>
-    <Route path='/' element={<All />} />
-    <Route path='/products/all' element={<All />} />
-    <Route path='products/tech' element={<Tech />} />
-    <Route path='products/clothes' element={<Clothes />} />
-    <Route path='products/all/:id' element={<ProductDetail />} />
+      <Route path="/" element={<Navigate to = {"/all"}/>} />
+      <Route path=":name" element={<ProductList />} />
+      <Route path=":name/:id" element={<ProductDetail />} />
     </Routes>
   );
 }
