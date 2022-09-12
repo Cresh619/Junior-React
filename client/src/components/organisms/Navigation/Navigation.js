@@ -1,10 +1,9 @@
-import { useQuery } from "@apollo/client";
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../../../assets/images/logoTransparent.png";
 import emptyCart from "../../../assets/images/EmptyCart.png";
-import { gql} from "@apollo/client";
+import { gql, useQuery} from "@apollo/client";
 
 const GET_CATEGORY = gql`
   query GetCategories{
@@ -51,9 +50,9 @@ const Navbar = styled.nav`
   }
 `;
 
-const withQueryHook = (Component, query) => {
+const withQueryHook = (Component) => {
   return (Navigation = (props) => {
-    const { loading, error, data } = useQuery(query);
+    const { loading, error, data } = useQuery(GET_CATEGORY);
     if (loading) return `Wait, data Loading`;
     if (error) return `Error! ${error}`;
     return <Component {...props} data={data} />;
@@ -69,7 +68,7 @@ class Navigation extends Component {
           <ul>
             {data.categories.map((category) => (
               <li key={category.name}>
-                <NavLink to={`products/${category.name}`}>
+                <NavLink to={`${category.name}`}>
                   {category.name}
                 </NavLink>
               </li>
