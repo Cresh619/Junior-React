@@ -1,14 +1,19 @@
 import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../../../assets/images/logoTransparent.png";
 import emptyCart from "../../../assets/images/EmptyCart.png";
-import { gql, useQuery} from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
+import { connect } from "react-redux";
 
 const GET_CATEGORY = gql`
-  query GetCategories{
+  query GetCategories {
     categories {
       name
+    }
+    currencies {
+      label
+      symbol
     }
   }
 `;
@@ -68,9 +73,7 @@ class Navigation extends Component {
           <ul>
             {data.categories.map((category) => (
               <li key={category.name}>
-                <NavLink to={`${category.name}`}>
-                  {category.name}
-                </NavLink>
+                <NavLink to={`${category.name}`}>{category.name}</NavLink>
               </li>
             ))}
           </ul>
@@ -80,15 +83,28 @@ class Navigation extends Component {
         </div>
         <div>
           <select name="currnecy" id="currnecy">
-            <option value="$">$</option>
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
+            {data.currencies.map((currency) => (
+              <option key={currency.symbol} value={currency.symbol}>
+                {currency.symbol} {currency.label}
+              </option>
+            ))}
           </select>
-          <img src={emptyCart} alt="" width="20" height="20" />
+          <div>
+            <Link to = 'cart'><img src={emptyCart} alt="emptyCart" width="20" height="20" /></Link>
+            <p>{this.props.getQuantity()||0}</p>
+          </div>
         </div>
       </Wrapper>
     );
   }
 }
 
-export default withQueryHook(Navigation, GET_CATEGORY);
+const mapStateToProps = (state) =>({
+  getQuantity: () => {
+    let total = 0;
+    state.cart.cart.forEach((item) => total += item.quantity)
+    return total;
+  }
+});
+
+export default connect(mapStateToProps)(withQueryHook(Navigation));

@@ -9,8 +9,12 @@ const PRODUCT_DETAIL = gql`
       gallery
       description
       category
-      attributes {
+      attributes{
         name
+        items{
+          value
+          displayValue
+        }
       }
       prices {
         currency {
