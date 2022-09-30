@@ -28,6 +28,7 @@ class ProductList extends Component {
         <Wrapper>
         {data.category.products.map((product) => (
           <ProductCard
+            key={product.id}
             id={product.id}
             image={product.gallery[0]}
             name={product.name}
